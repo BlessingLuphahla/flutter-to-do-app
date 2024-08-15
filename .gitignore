@@ -1,5 +1,5 @@
-# Object file
-*.o
-
-# Ada Library Information
-*.ali
+build
+.dart_tool
+.idea
+test
+.vscode
