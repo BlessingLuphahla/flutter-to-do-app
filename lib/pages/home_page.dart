@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_app/utils/dialog_box.dart';
+import 'package:to_do_app/utils/redd_drawer.dart';
 import 'package:to_do_app/utils/to_do_tile.dart';
 import 'package:to_do_app/data/to_do_database.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -97,64 +98,8 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    ButtonStyle buttonStyle() {
-      return ButtonStyle(
-          padding: WidgetStatePropertyAll(EdgeInsets.all(15)),
-          foregroundColor: WidgetStateColor.resolveWith((_) {
-            return Colors.white;
-          }),
-          backgroundColor: WidgetStateColor.resolveWith((_) {
-            return Colors.purple;
-          }));
-    }
-
-    const sizedBoxHeight = SizedBox(
-      height: 30,
-    );
-
     return Scaffold(
-      drawer: Drawer(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            ElevatedButton(
-                style: buttonStyle(),
-                child: const Text('Call Me'),
-                onPressed: () {
-                  launchUrl(Uri.parse('tel:+263788793302'),
-                      mode: LaunchMode.externalApplication);
-                }),
-            sizedBoxHeight,
-            ElevatedButton(
-                style: buttonStyle(),
-                child: const Text('Contact Me On Email'),
-                onPressed: () {
-                  launchUrl(
-                      Uri.parse(
-                          'mailto: luphahlablessingthamsanqa@gmail.com?subject=Business&body=Hey Dynamic Digital Design can you'),
-                      mode: LaunchMode.externalApplication);
-                }),
-            sizedBoxHeight,
-            ElevatedButton(
-                style: buttonStyle(),
-                child: const Text('Connect With Me On Whatsapp'),
-                onPressed: () {
-                  launchUrl(
-                      Uri.parse('https://wa.me/263788793302?text=Hey REDD AXE'),
-                      mode: LaunchMode.externalApplication);
-                }),
-            sizedBoxHeight,
-            const Text(
-              'contact the developer',
-              style: TextStyle(
-                  color: Colors.purple,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 20),
-            )
-          ],
-        ),
-      ),
+      drawer: const ReddDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: createNewTask,
         backgroundColor: const Color.fromRGBO(24, 24, 80, 1),
