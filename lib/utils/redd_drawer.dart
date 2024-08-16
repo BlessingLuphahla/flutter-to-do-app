@@ -4,20 +4,20 @@ import 'package:url_launcher/url_launcher.dart';
 class ReddDrawer extends StatelessWidget {
   ButtonStyle buttonStyle() {
     return ButtonStyle(
-        padding: WidgetStatePropertyAll(EdgeInsets.all(15)),
+        padding: const WidgetStatePropertyAll(EdgeInsets.all(8)),
         foregroundColor: WidgetStateColor.resolveWith((_) {
-          return Color.fromARGB(255, 255, 255, 255);
+          return const Color.fromARGB(255, 255, 255, 255);
         }),
         backgroundColor: WidgetStateColor.resolveWith((_) {
-          return Colors.purple;
+          return const Color.fromARGB(118, 217, 1, 255);
         }));
   }
 
   static const sizedBoxHeight = SizedBox(
-    height: 30,
+    height: 25,
   );
 
-  const ReddDrawer({Key? key}) : super(key: key);
+  const ReddDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +58,7 @@ class ReddDrawer extends StatelessWidget {
             style: TextStyle(
                 color: Colors.purple,
                 fontWeight: FontWeight.w500,
-                fontSize: 20),
+                fontSize: 15),
           )
         ],
       ),

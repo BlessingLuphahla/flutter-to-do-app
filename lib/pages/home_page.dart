@@ -4,7 +4,6 @@ import 'package:to_do_app/utils/redd_drawer.dart';
 import 'package:to_do_app/utils/to_do_tile.dart';
 import 'package:to_do_app/data/to_do_database.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
