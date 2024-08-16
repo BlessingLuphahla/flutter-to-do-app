@@ -98,15 +98,18 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     ButtonStyle buttonStyle() {
-      return ButtonStyle(foregroundColor: WidgetStateColor.resolveWith((_) {
-        return Colors.white;
-      }), backgroundColor: WidgetStateColor.resolveWith((_) {
-        return Colors.deepPurpleAccent;
-      }));
+      return ButtonStyle(
+          padding: WidgetStatePropertyAll(EdgeInsets.all(15)),
+          foregroundColor: WidgetStateColor.resolveWith((_) {
+            return Colors.white;
+          }),
+          backgroundColor: WidgetStateColor.resolveWith((_) {
+            return Colors.purple;
+          }));
     }
 
-    const sizedBox = SizedBox(
-      height: 50,
+    const sizedBoxHeight = SizedBox(
+      height: 30,
     );
 
     return Scaffold(
@@ -122,7 +125,7 @@ class HomePageState extends State<HomePage> {
                   launchUrl(Uri.parse('tel:+263788793302'),
                       mode: LaunchMode.externalApplication);
                 }),
-            sizedBox,
+            sizedBoxHeight,
             ElevatedButton(
                 style: buttonStyle(),
                 child: const Text('Contact Me On Email'),
@@ -132,7 +135,7 @@ class HomePageState extends State<HomePage> {
                           'mailto: luphahlablessingthamsanqa@gmail.com?subject=Business&body=Hey Dynamic Digital Design can you'),
                       mode: LaunchMode.externalApplication);
                 }),
-            sizedBox,
+            sizedBoxHeight,
             ElevatedButton(
                 style: buttonStyle(),
                 child: const Text('Connect With Me On Whatsapp'),
@@ -141,8 +144,14 @@ class HomePageState extends State<HomePage> {
                       Uri.parse('https://wa.me/263788793302?text=Hey REDD AXE'),
                       mode: LaunchMode.externalApplication);
                 }),
-            sizedBox,
-            const Text('contact the developer',style: TextStyle(color: Colors.green,fontWeight: FontWeight.w500),)
+            sizedBoxHeight,
+            const Text(
+              'contact the developer',
+              style: TextStyle(
+                  color: Colors.purple,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 20),
+            )
           ],
         ),
       ),
