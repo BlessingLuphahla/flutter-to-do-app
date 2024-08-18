@@ -1,3 +1,4 @@
+// Configure repositories for all projects in the build
 allprojects {
     repositories {
         google()
@@ -5,14 +6,19 @@ allprojects {
     }
 }
 
+// Set the build directory to a common location outside the project folder
 rootProject.buildDir = "../build"
+
+// Apply common configuration to all subprojects
 subprojects {
+    // Set the build directory for each subproject
     project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-subprojects {
-    project.evaluationDependsOn(":app")
+    
+    // Ensure the ":app" project is evaluated before other subprojects
+    evaluationDependsOn(":app")
 }
 
+// Register a clean task to delete the root project's build directory
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
