@@ -7,7 +7,7 @@ void main() async {
   await Hive.initFlutter();
   await Hive.openBox('ToDoBox');
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {

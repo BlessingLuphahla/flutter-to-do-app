@@ -101,6 +101,17 @@ class HomePageState extends State<HomePage> {
         });
   }
 
+  void sortTasks(String criteria) {
+    setState(() {
+      if (criteria == 'Name') {
+        db.toDoList.sort((a, b) => a[0].compareTo(b[0]));
+      } else if (criteria == 'Status') {
+        db.toDoList.sort((a, b) => a[1] ? 1 : -1); // Sort by completion status
+      }
+      db.updateDatabase();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,19 +128,117 @@ class HomePageState extends State<HomePage> {
         ),
       ),
       appBar: AppBar(
-        title: const Text('REDD AXE'),
-        centerTitle: true,
-        elevation: 0,
-        actions: [
-          Switch(
-            value: widget.isDarkMode,
-            onChanged: widget.toggleTheme,
-          ),
-          SizedBox(
-            width: 30,
-          )
-        ],
+  toolbarHeight: 110, // Adjusted height to fit contents
+  title: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      // Title
+      const Text(
+        'REDD AXE',
+        style: TextStyle(fontSize: 15),
       ),
+      // Dropdown menu for options
+      PopupMenuButton<String>(
+        padding: const EdgeInsets.all(16.0),
+        itemBuilder: (context) => [
+          PopupMenuItem<String>(
+            value: 'Search',
+            child: Container(
+              width: 300, // Increased width for search bar
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Search bar inside the dropdown
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Search...',
+                        prefixIcon: const Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 0, horizontal: 10),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          if (value.isEmpty) {
+                            db.LoadData();
+                          } else {
+                            db.toDoList = db.toDoList.where((task) {
+                              String taskName =
+                                  task[0].toString().toLowerCase();
+                              return taskName.contains(value.toLowerCase());
+                            }).toList();
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                  // Sort by dropdown inside the dropdown
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: DropdownButton<String>(
+                      hint: const Text('Sort by'),
+                      isExpanded: true, // Expand to fill available width
+                      items: ['Name', 'Status'].map((String option) {
+                        return DropdownMenuItem<String>(
+                          value: option,
+                          child: Text(option),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        if (value != null) {
+                          sortTasks(value);
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          PopupMenuItem<String>(
+            value: 'Theme',
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  // Switch inside the dropdown
+                  Switch(
+                    value: widget.isDarkMode,
+                    onChanged: (bool newValue) {
+                      setState(() {
+                        widget.toggleTheme(newValue);
+                      });
+                    },
+                  ),
+                  const SizedBox(width: 15),
+                  const Text('Dark Mode'),
+                ],
+              ),
+            ),
+          ),
+        ],
+        // Adjust width of the dropdown menu
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: const Row(
+            children: [
+              Text('Options'),
+              Icon(Icons.arrow_drop_down),
+            ],
+          ),
+        ),
+      ),
+    ],
+  ),
+)
+,
       body: ListView.builder(
         itemCount: db.toDoList.length,
         itemBuilder: (_, index) {
