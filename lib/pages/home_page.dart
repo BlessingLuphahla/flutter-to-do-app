@@ -135,9 +135,9 @@ class HomePageState extends State<HomePage> {
             // Title
             const Text(
               'REDD AXE',
-              style: TextStyle(fontSize: 25),
+              style: TextStyle(fontSize: 20),
             ),
-            SizedBox(
+            const SizedBox(
               width: 20,
             ),
 
@@ -233,7 +233,7 @@ class HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: const Row(
                   children: [
-                    Text('Options'),
+                    Text('Options',style: TextStyle(fontSize: 15),),
                     Icon(Icons.arrow_drop_down),
                   ],
                 ),
