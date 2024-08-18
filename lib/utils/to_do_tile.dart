@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:to_do_app/utils/redd_button.dart';
 
-class ToDoTile extends StatelessWidget {
+class ToDoTile extends StatefulWidget {
   final String taskName;
   final bool taskCompleted;
   final Function(bool?)? onChanged;
   final VoidCallback deleteTask;
   final VoidCallback editTask;
+  final bool isDarkMode;
 
   const ToDoTile({
     super.key,
@@ -16,16 +17,25 @@ class ToDoTile extends StatelessWidget {
     required this.onChanged,
     required this.deleteTask,
     required this.editTask,
+    required this.isDarkMode,
   });
 
   static const double tilePadding = 18.0;
 
   @override
+  State<ToDoTile> createState() => _ToDoTileState();
+}
+
+class _ToDoTileState extends State<ToDoTile> {
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.only(
-            left: tilePadding, right: tilePadding, top: tilePadding),
+          left: ToDoTile.tilePadding,
+          right: ToDoTile.tilePadding,
+          top: ToDoTile.tilePadding,
+        ),
         child: Slidable(
           endActionPane: ActionPane(
             motion: const StretchMotion(),
@@ -35,7 +45,7 @@ class ToDoTile extends StatelessWidget {
                 icon: Icons.edit,
                 backgroundColor: Colors.blueAccent,
                 onPressed: (context) {
-                  editTask();
+                  widget.editTask();
                 },
               ),
               SlidableAction(
@@ -43,7 +53,7 @@ class ToDoTile extends StatelessWidget {
                 icon: Icons.delete,
                 backgroundColor: Colors.red,
                 onPressed: (context) {
-                  deleteTask();
+                  widget.deleteTask();
                 },
               ),
             ],
@@ -56,8 +66,8 @@ class ToDoTile extends StatelessWidget {
               child: Row(
                 children: [
                   Checkbox(
-                    value: taskCompleted,
-                    onChanged: onChanged,
+                    value: widget.taskCompleted,
+                    onChanged: widget.onChanged,
                     activeColor: Colors.deepPurpleAccent,
                     checkColor: Colors.black,
                   ),
@@ -73,13 +83,14 @@ class ToDoTile extends StatelessWidget {
                                 width: dialogSize,
                                 height: dialogSize + 50,
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
                                   children: [
                                     Text(
                                       softWrap: true,
-                                      taskName,
+                                      widget.taskName,
                                       style: TextStyle(
-                                        decoration: taskCompleted
+                                        decoration: widget.taskCompleted
                                             ? TextDecoration.lineThrough
                                             : TextDecoration.none,
                                       ),
@@ -88,6 +99,7 @@ class ToDoTile extends StatelessWidget {
                                       height: 20,
                                     ),
                                     ReddButton(
+                                      isDarkMode: widget.isDarkMode,
                                       onPressed: () =>
                                           Navigator.of(context).pop(),
                                       buttonName: 'cancel',
@@ -98,15 +110,19 @@ class ToDoTile extends StatelessWidget {
                             );
                           });
                     },
-                    child: Text(
-                      softWrap: true,
-                      taskName.length < 38
-                          ? taskName.trim()
-                          : '${taskName.trim().substring(0, 38)}...',
-                      style: TextStyle(
-                        decoration: taskCompleted
-                            ? TextDecoration.lineThrough
-                            : TextDecoration.none,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        softWrap: true,
+                        widget.taskName.length < 38
+                            ? widget.taskName.trim()
+                            : '${widget.taskName.trim().substring(0, 38)}...',
+                        style: TextStyle(
+                          color: Colors.white,
+                          decoration: widget.taskCompleted
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none,
+                        ),
                       ),
                     ),
                   ),
