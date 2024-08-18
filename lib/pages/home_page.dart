@@ -6,7 +6,11 @@ import 'package:to_do_app/data/to_do_database.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final Function(bool) toggleTheme;
+  final bool isDarkMode;
+
+  const HomePage(
+      {super.key, required this.toggleTheme, required this.isDarkMode});
 
   @override
   HomePageState createState() => HomePageState();
@@ -54,6 +58,7 @@ class HomePageState extends State<HomePage> {
         context: context,
         builder: (context) {
           return DialogBox(
+            isDarkMode: widget.isDarkMode,
             hintText: 'Add new Task',
             controller: _controller,
             onSaved: saveNewTask,
@@ -78,6 +83,7 @@ class HomePageState extends State<HomePage> {
         context: context,
         builder: (context) {
           return DialogBox(
+            isDarkMode: widget.isDarkMode,
             hintText: 'Edit Task',
             controller: _editController,
             onSaved: () => {
@@ -101,21 +107,34 @@ class HomePageState extends State<HomePage> {
       drawer: const ReddDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: createNewTask,
-        backgroundColor: const Color.fromRGBO(24, 24, 80, 1),
+        backgroundColor: widget.isDarkMode
+            ? const Color.fromRGBO(24, 24, 80, 1)
+            : Colors.white,
         elevation: 0,
-        child: const Icon(
+        child: Icon(
           Icons.add,
+          color: widget.isDarkMode ? Colors.white : Colors.black,
         ),
       ),
       appBar: AppBar(
         title: const Text('REDD AXE'),
         centerTitle: true,
         elevation: 0,
+        actions: [
+          Switch(
+            value: widget.isDarkMode,
+            onChanged: widget.toggleTheme,
+          ),
+          SizedBox(
+            width: 30,
+          )
+        ],
       ),
       body: ListView.builder(
         itemCount: db.toDoList.length,
         itemBuilder: (_, index) {
           return ToDoTile(
+            isDarkMode: widget.isDarkMode,
             taskName: db.toDoList[index][0],
             taskCompleted: db.toDoList[index][1],
             onChanged: (value) => checkBoxChanged(value, index),
