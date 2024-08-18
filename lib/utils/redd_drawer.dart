@@ -53,7 +53,7 @@ class ReddDrawer extends StatelessWidget {
             onPressed: () {
               launchUrl(
                   Uri.parse(
-                      'mailto: luphahlablessingthamsanqa@gmail.com?subject=Business&body=Hey Dynamic Digital Design can you'),
+                      'mailto: luphahlablessingthamsanqa@gmail.com?subject=Business&body=Hey Redd Axe '),
                   mode: LaunchMode.externalApplication);
             },
           ),
