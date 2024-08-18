@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:to_do_app/pages/home_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:to_do_app/pages/home_page.dart';
 
 void main() async {
   // Initialize Hive
@@ -20,9 +20,20 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool isDarkMode = true; // Default theme is dark
 
+  final _settingsBox = Hive.box('ToDoBox');
+
+  @override
+  void initState() {
+    super.initState();
+    // Load the saved theme preference
+    isDarkMode = _settingsBox.get('isDarkMode', defaultValue: true);
+  }
+
   void toggleTheme(bool value) {
     setState(() {
       isDarkMode = value;
+      // Save the theme preference to Hive
+      _settingsBox.put('isDarkMode', isDarkMode);
     });
   }
 
