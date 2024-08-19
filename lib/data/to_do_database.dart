@@ -11,6 +11,7 @@ class ToDoDatabase {
     toDoList = [
       ["Slide A Task For More Options", false],
       ["Check task to cross it out like this", true],
+      ["click on the task for more information", false],
     ];
   }
 
