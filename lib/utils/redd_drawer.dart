@@ -2,14 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ReddDrawer extends StatelessWidget {
-  const ReddDrawer({super.key});
+class ReddDrawer extends StatefulWidget {
+  final isDarkMode;
 
+  const ReddDrawer({super.key, required this.isDarkMode});
+
+  static const sizedBoxHeight = SizedBox(
+    height: 25,
+  );
+
+  @override
+  State<ReddDrawer> createState() => _ReddDrawerState();
+}
+
+class _ReddDrawerState extends State<ReddDrawer> {
   // Common button style for all buttons in the drawer
   ButtonStyle buttonStyle() {
     return ElevatedButton.styleFrom(
       padding: EdgeInsets.zero,
-      foregroundColor: Colors.white,
+      foregroundColor: widget.isDarkMode ? Colors.white : Colors.black,
       backgroundColor: const Color.fromARGB(255, 10, 6, 11),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
@@ -17,10 +28,6 @@ class ReddDrawer extends StatelessWidget {
       fixedSize: const Size(60, 60),
     );
   }
-
-  static const sizedBoxHeight = SizedBox(
-    height: 25,
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +44,7 @@ class ReddDrawer extends StatelessWidget {
               fontSize: 15,
             ),
           ),
-          sizedBoxHeight,
+          ReddDrawer.sizedBoxHeight,
           ElevatedButton(
             style: buttonStyle(),
             child: const Icon(Icons.phone, size: 20),
@@ -46,7 +53,7 @@ class ReddDrawer extends StatelessWidget {
                   mode: LaunchMode.externalApplication);
             },
           ),
-          sizedBoxHeight,
+          ReddDrawer.sizedBoxHeight,
           ElevatedButton(
             style: buttonStyle(),
             child: const Icon(Icons.email, size: 20),
@@ -57,7 +64,7 @@ class ReddDrawer extends StatelessWidget {
                   mode: LaunchMode.externalApplication);
             },
           ),
-          sizedBoxHeight,
+          ReddDrawer.sizedBoxHeight,
           ElevatedButton(
             style: buttonStyle(),
             child: const FaIcon(FontAwesomeIcons.whatsapp,

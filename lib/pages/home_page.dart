@@ -97,29 +97,32 @@ class HomePageState extends State<HomePage> {
   }
 
   void editTask(int index) {
-    _editController.text = db.toDoList[index]
-        [0]; // Load current task name into the edit controller
+    // Load the current task name into the edit controller for pre-filled input
+    _editController.text = db.toDoList[index][0];
 
     showDialog(
-        context: context,
-        builder: (context) {
-          return DialogBox(
-            isDarkMode: widget.isDarkMode,
-            hintText: 'Edit Task',
-            controller: _editController,
-            onSaved: () {
-              setState(() {
-                db.toDoList[index][0] = _editController.text;
-                db.updateDatabase();
-                _editController.clear();
-              });
-              Navigator.of(context).pop();
-            },
-            onCancelled: () {
-              Navigator.of(context).pop();
-            },
-          );
-        });
+      context: context,
+      builder: (context) {
+        return DialogBox(
+          isDarkMode: widget.isDarkMode,
+          hintText: 'Edit Task',
+          controller: _editController,
+          onSaved: () {
+            setState(() {
+              // Update the task with the edited text
+              db.toDoList[index][0] = _editController.text;
+              db.updateDatabase();
+              _editController.clear();
+            });
+            Navigator.of(context).pop();
+          },
+          onCancelled: () {
+            _editController.clear();
+            Navigator.of(context).pop();
+          },
+        );
+      },
+    );
   }
 
   void sortTasks(String criteria) {
@@ -138,12 +141,13 @@ class HomePageState extends State<HomePage> {
     var listToDisplay = isSearching ? searchResults : db.toDoList;
 
     return Scaffold(
-      drawer: const ReddDrawer(),
+      drawer: ReddDrawer(
+        isDarkMode: widget.isDarkMode,
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: createNewTask,
-        backgroundColor: widget.isDarkMode
-            ? const Color.fromRGBO(24, 24, 80, 1)
-            : Colors.white,
+        backgroundColor:
+            widget.isDarkMode ? Color.fromARGB(255, 45, 45, 46) : Color.fromARGB(255, 137, 21, 106),
         elevation: 0,
         child: Icon(
           Icons.add,
@@ -228,9 +232,8 @@ class HomePageState extends State<HomePage> {
                         Switch(
                           value: widget.isDarkMode,
                           onChanged: (bool newValue) {
-                            Navigator.pop(context); // Close the dropdown
-                            widget.toggleTheme(
-                                newValue); // Toggle theme immediately
+                            widget.toggleTheme(newValue);
+                            Navigator.pop(context);
                           },
                         ),
                       ],
