@@ -98,7 +98,7 @@ class _ToDoTileState extends State<ToDoTile> {
               child: Container(
                 padding: const EdgeInsets.all(15.0),
                 decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 0, 0, 0),
+                    color: const Color.fromARGB(255, 0, 0, 0),
                     borderRadius: BorderRadius.circular(12)),
                 child: Flex(direction: Axis.horizontal, children: [
                   Expanded(

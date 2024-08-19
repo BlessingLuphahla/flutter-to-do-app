@@ -135,7 +135,7 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final listToDisplay = isSearching ? searchResults : db.toDoList;
+    var listToDisplay = isSearching ? searchResults : db.toDoList;
 
     return Scaffold(
       drawer: const ReddDrawer(),
@@ -222,17 +222,48 @@ class HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: [
+                        const Text('Dark Mode'),
+                        const Spacer(),
                         // Switch inside the dropdown
                         Switch(
                           value: widget.isDarkMode,
                           onChanged: (bool newValue) {
-                            setState(() {
-                              widget.toggleTheme(newValue);
-                            });
+                            Navigator.pop(context); // Close the dropdown
+                            widget.toggleTheme(
+                                newValue); // Toggle theme immediately
                           },
                         ),
-                        const SizedBox(width: 15),
-                        const Text('Dark Mode'),
+                      ],
+                    ),
+                  ),
+                ),
+                PopupMenuItem<String>(
+                  onTap: () {
+                    setState(() {
+                      isSearching = false;
+                      searchResults.clear();
+                      listToDisplay = db.toDoList;
+                    });
+                  },
+                  value: 'reset',
+                  child: Container(
+                    padding: const EdgeInsets.all(8.0),
+                    child: const Row(
+                      children: [
+                        Spacer(),
+                        // Switch inside the dropdown
+                        Icon(
+                          Icons.restore,
+                          size: 30,
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text(
+                          'Reset Search',
+                          style: TextStyle(fontSize: 15),
+                        ),
+                        Spacer(),
                       ],
                     ),
                   ),

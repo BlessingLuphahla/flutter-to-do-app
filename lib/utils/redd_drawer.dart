@@ -10,7 +10,7 @@ class ReddDrawer extends StatelessWidget {
     return ElevatedButton.styleFrom(
       padding: EdgeInsets.zero,
       foregroundColor: Colors.white,
-      backgroundColor: Color.fromARGB(255, 10, 6, 11),
+      backgroundColor: const Color.fromARGB(255, 10, 6, 11),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
