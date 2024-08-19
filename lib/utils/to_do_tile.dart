@@ -64,71 +64,72 @@ class _ToDoTileState extends State<ToDoTile> {
               decoration: BoxDecoration(
                   color: Colors.black, borderRadius: BorderRadius.circular(12)),
               child: Expanded(
-  child: Row(
-    children: [
-      Checkbox(
-        value: widget.taskCompleted,
-        onChanged: widget.onChanged,
-        activeColor: Colors.deepPurpleAccent,
-        checkColor: Colors.black,
-      ),
-      Flexible(
-        child: GestureDetector(
-          onTap: () {
-            const double dialogSize = 500;
+                child: Row(
+                  children: [
+                    Checkbox(
+                      value: widget.taskCompleted,
+                      onChanged: widget.onChanged,
+                      activeColor: Colors.deepPurpleAccent,
+                      checkColor: Colors.black,
+                    ),
+                    Flexible(
+                      child: GestureDetector(
+                        onTap: () {
+                          const double dialogSize = 500;
 
-            showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  content: SizedBox(
-                    width: dialogSize,
-                    height: dialogSize + 50,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(
-                          widget.taskName,
-                          softWrap: true,
-                          style: TextStyle(
-                            decoration: widget.taskCompleted
-                                ? TextDecoration.lineThrough
-                                : TextDecoration.none,
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                content: SizedBox(
+                                  width: dialogSize,
+                                  height: dialogSize + 50,
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Text(
+                                        widget.taskName,
+                                        softWrap: true,
+                                        style: TextStyle(
+                                          decoration: widget.taskCompleted
+                                              ? TextDecoration.lineThrough
+                                              : TextDecoration.none,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 20),
+                                      ReddButton(
+                                        isDarkMode: widget.isDarkMode,
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(),
+                                        buttonName: 'cancel',
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            widget.taskName.length < 38
+                                ? widget.taskName.trim()
+                                : '${widget.taskName.trim().substring(0, 38)}...',
+                            style: TextStyle(
+                              color: Colors.white,
+                              decoration: widget.taskCompleted
+                                  ? TextDecoration.lineThrough
+                                  : TextDecoration.none,
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 20),
-                        ReddButton(
-                          isDarkMode: widget.isDarkMode,
-                          onPressed: () => Navigator.of(context).pop(),
-                          buttonName: 'cancel',
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                );
-              },
-            );
-          },
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Text(
-              widget.taskName.length < 38
-                  ? widget.taskName.trim()
-                  : '${widget.taskName.trim().substring(0, 38)}...',
-              style: TextStyle(
-                color: Colors.white,
-                decoration: widget.taskCompleted
-                    ? TextDecoration.lineThrough
-                    : TextDecoration.none,
+                  ],
+                ),
               ),
-            ),
-          ),
-        ),
-      ),
-    ],
-  ),
-),
-
             ),
           ),
         ),

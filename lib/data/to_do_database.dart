@@ -14,11 +14,11 @@ class ToDoDatabase {
     ];
   }
 
-  void LoadData() {
-    toDoList = _toDoBox.get('TODOLIST');
-  }
-
   void updateDatabase() {
     _toDoBox.put('TODOLIST', toDoList);
+  }
+
+  void LoadData() {
+    toDoList = _toDoBox.get('TODOLIST');
   }
 }

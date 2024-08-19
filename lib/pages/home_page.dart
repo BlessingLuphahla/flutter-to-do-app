@@ -20,6 +20,24 @@ class HomePageState extends State<HomePage> {
   final _toDoBox = Hive.box('ToDoBox');
   ToDoDatabase db = ToDoDatabase();
 
+  List searchResults = [];
+  bool isSearching = false;
+
+  void onSearch(String value) {
+    setState(() {
+      if (value.isEmpty) {
+        isSearching = false;
+        searchResults.clear();
+      } else {
+        isSearching = true;
+        searchResults = db.toDoList.where((task) {
+          String taskName = task[0].toString().toLowerCase();
+          return taskName.contains(value.toLowerCase());
+        }).toList();
+      }
+    });
+  }
+
   @override
   void initState() {
     if (_toDoBox.get('TODOLIST') == null) {
@@ -71,14 +89,17 @@ class HomePageState extends State<HomePage> {
     return;
   }
 
-  void deleteTask(index) {
+  void deleteTask(int index) {
     setState(() {
       db.toDoList.removeAt(index);
       db.updateDatabase();
     });
   }
 
-  void editTask(index) {
+  void editTask(int index) {
+    _editController.text = db.toDoList[index]
+        [0]; // Load current task name into the edit controller
+
     showDialog(
         context: context,
         builder: (context) {
@@ -86,13 +107,13 @@ class HomePageState extends State<HomePage> {
             isDarkMode: widget.isDarkMode,
             hintText: 'Edit Task',
             controller: _editController,
-            onSaved: () => {
+            onSaved: () {
               setState(() {
                 db.toDoList[index][0] = _editController.text;
                 db.updateDatabase();
                 _editController.clear();
-                Navigator.of(context).pop();
-              })
+              });
+              Navigator.of(context).pop();
             },
             onCancelled: () {
               Navigator.of(context).pop();
@@ -114,6 +135,8 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final listToDisplay = isSearching ? searchResults : db.toDoList;
+
     return Scaffold(
       drawer: const ReddDrawer(),
       floatingActionButton: FloatingActionButton(
@@ -167,20 +190,7 @@ class HomePageState extends State<HomePage> {
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 0, horizontal: 10),
                             ),
-                            onChanged: (value) {
-                              setState(() {
-                                if (value.isEmpty) {
-                                  db.LoadData();
-                                } else {
-                                  db.toDoList = db.toDoList.where((task) {
-                                    String taskName =
-                                        task[0].toString().toLowerCase();
-                                    return taskName
-                                        .contains(value.toLowerCase());
-                                  }).toList();
-                                }
-                              });
-                            },
+                            onChanged: (value) => onSearch(value),
                           ),
                         ),
                         // Sort by dropdown inside the dropdown
@@ -233,7 +243,10 @@ class HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: const Row(
                   children: [
-                    Text('Options',style: TextStyle(fontSize: 15),),
+                    Text(
+                      'Options',
+                      style: TextStyle(fontSize: 15),
+                    ),
                     Icon(Icons.arrow_drop_down),
                   ],
                 ),
@@ -243,12 +256,12 @@ class HomePageState extends State<HomePage> {
         ),
       ),
       body: ListView.builder(
-        itemCount: db.toDoList.length,
+        itemCount: listToDisplay.length,
         itemBuilder: (_, index) {
           return ToDoTile(
             isDarkMode: widget.isDarkMode,
-            taskName: db.toDoList[index][0],
-            taskCompleted: db.toDoList[index][1],
+            taskName: listToDisplay[index][0],
+            taskCompleted: listToDisplay[index][1],
             onChanged: (value) => checkBoxChanged(value, index),
             deleteTask: () => deleteTask(index),
             editTask: () => editTask(index),
