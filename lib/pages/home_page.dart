@@ -97,7 +97,6 @@ class HomePageState extends State<HomePage> {
   }
 
   void editTask(int index) {
-    // Load the current task name into the edit controller for pre-filled input
     _editController.text = db.toDoList[index][0];
 
     showDialog(
@@ -147,7 +146,7 @@ class HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: createNewTask,
         backgroundColor:
-            widget.isDarkMode ? Color.fromARGB(255, 45, 45, 46) : Color.fromARGB(255, 137, 21, 106),
+            widget.isDarkMode ? const Color.fromARGB(255, 45, 45, 46) : const Color.fromARGB(255, 137, 21, 106),
         elevation: 0,
         child: Icon(
           Icons.add,
